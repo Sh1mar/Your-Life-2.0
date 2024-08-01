@@ -3,8 +3,6 @@ let userTimeFramesElement = document.getElementById('timeFrameSelection');
 let userDOBValue = null;
 let selectedTimeFrame = null;
 
-
-
 // This code defines a helper function addTailwindClasses that takes an element and a string of Tailwind classes as arguments.
 // It splits the classes string into an array and adds them to the element's classList.
 function addTailwindClasses(element, classes) {
@@ -341,7 +339,3 @@ function main() {
 }
 
 main();
-
-
-
-
