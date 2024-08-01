@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Weeks in Life</title>
+   <link rel="stylesheet" href="css/styles.css">
+
+</head>
+<body class = "flex flex-col min-h-screen">
+
+   <!-- MARK: Heading and Select Time -->
+   <section id="heading">
+      <div class="container flex flex-row justify-center items-center mx-auto py-6 "id = "Form">
+         <h1 class="text-2xl text-bold text-brightRed mr-2 md:text-4xl ">Your Life in</h1>
+         <select name="time" id="timeFrameSelection" class="text-2xl text-center bg-primaryColor text-white md:text-4xl">
+            <option class = "text-lg " style="display:none" value = "None" >Select a Time</option>
+            <option class = "text-lg" value = "Years">Years</option>
+            <option class = "text-lg" value = "Months">Months</option>
+            <option class = "text-lg" value = "Weeks">Weeks</option>
+         </select>   
+      </div>
+   </section>
+  
+   <!-- MARK : Name & DOB Form -->
+   <section id="form">
+      <div class="flex items-center justify-center">
+         <form class="flex flex-col space-y-2" id = "userForm">
+            <input type="date" style = "width: 300px;" class="w-full px-4 py-2 rounded-full focus:outline-none justify-center text-center" id = "userDOB">
+            <button class="p-2 text-center text-white rounded-full bg-brightRed hover:bg-brightRedLight focus:outline-none" id = "formSubmit">Submit</button>
+         </form>
+      </div>
+   </section>
+
+   <!-- MARK: TIMEs -->
+   <main class = "flex-grow" id ="Time">
+
+      <!-- MARK:Years -->
+      <div class="" id="Years">
+      </div>
+   
+      <!-- MARK: Months -->
+      <div class="" id="Months">
+      </div>
+   
+      <!-- MARK:Weeks  -->
+      <div class="" id="Weeks"> 
+      </div>      
+      
+   </main>
+
+   <footer class="bg-veryDarkBlue" >
+      <!-- px-6 p-4 mx-auto -->
+      <div class="container flex flex-col justify-between px-4 p-6 mx-auto space-y-2 md:space-y-0">
+         <h4 class = "text-sm text-white text-center">Based on the <a href = "#" class = "text-brightRed">Your Life in Weeks</a> post by Tim Urban, from <a href = "#" class = "text-brightRed"> Wait But Why.</a></h4>
+         <h3 class = "text-sm text-white text-center"><a href = "#">Code on Github</a></h3>
+         <h3 class = "text-sm text-white text-center">Print this Page</h3>
+      </div>
+   </footer>   
+   
+   <script src = "./js/main.js"></script>
+   
+</body>
+</html>
+

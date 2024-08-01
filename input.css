@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* // Add custom classes */
+
+body{ 
+   background: #212121;
+}
+
+.rotate-90 { 
+   transform: rotate(90deg);
+}
+
+.rotate-45 { 
+   transform: rotate(45deg);
+}
