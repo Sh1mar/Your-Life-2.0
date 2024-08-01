@@ -3,15 +3,12 @@ let userTimeFramesElement = document.getElementById('timeFrameSelection');
 let userDOBValue = null;
 let selectedTimeFrame = null;
 
-/* 
-   This code defines a helper function addTailwindClasses that takes an element and a string of Tailwind classes as arguments.
-   It splits the classes string into an array and adds them to the element's classList.
-*/
 // MARK: Tailwind Utilities Functions
+// This code defines a helper function addTailwindClasses that takes an element and a string of Tailwind classes as arguments.
+// It splits the classes string into an array and adds them to the element's classList.
 function addTailwindClasses(element, classes) {
    element.classList.add(...classes.split(' '));
 }
-
 
 // MARK:Clear UI
 // The clearContainer function is defined to clear the contents of a container element by its ID.
@@ -115,21 +112,6 @@ function createMonthsUI(userYears,userMonths) {
    const headerContainer = document.createElement('div');
    addTailwindClasses(headerContainer, 'grid grid-flow-col justify-stretch');
 
-   // UI Change Needed!
-
-   // Months Label
-   // const headerMonth = document.createElement('div');
-   // addTailwindClasses(headerMonth, 'flex justify-center items-center w-64 h-8 p-2 border-2 text-white text-xs bg-brightRed mb-2 ml-4');
-   // headerMonth.textContent = 'Months';
-
-   // Years Label
-   // const headerYear = document.createElement('div');
-   // addTailwindClasses(headerYear, 'flex justify-center items-center w-10 h-8 p-2 border text-white text-xs bg-brightRed mb-2');
-   // headerYear.textContent = 'Years';
-
-   // headerContainer.appendChild(headerYear);
-   // headerContainer.appendChild(headerMonth);
-
    innerContainer.appendChild(headerContainer);
 
    for (let year = 1; year <= 90; year++) {
@@ -187,7 +169,7 @@ function createMonthsUI(userYears,userMonths) {
 }
 
 // MARK: Weeks UI
-function createWeeksUI(userYears,userMonths,userDays) {
+function createWeeksUI(userYears) {
 
    const container = document.createElement('div');
    addTailwindClasses(container, 'flex justify-center items-center py-16');
@@ -199,19 +181,6 @@ function createWeeksUI(userYears,userMonths,userDays) {
    const headerContainer = document.createElement('div');
    addTailwindClasses(headerContainer, 'grid grid-flow-col justify-stretch');
 
-   // // UI Change Needed!
-   // Weeks Label
-   // const headerMonth = document.createElement('div');
-   // addTailwindClasses(headerMonth, 'flex justify-center items-center w-64 h-8 p-2 border-2 text-white text-xs bg-brightRed mb-2 ml-4');
-   // headerMonth.textContent = 'Weeks';
-
-   // Years Lavel
-   // const headerYear = document.createElement('div');
-   // addTailwindClasses(headerYear, 'flex justify-center items-center w-10 h-8 p-2 border text-white text-xs bg-brightRed mb-2');
-   // headerYear.textContent = 'Years';
-
-   // headerContainer.appendChild(headerYear);
-   // headerContainer.appendChild(headerMonth);
    innerContainer.appendChild(headerContainer);
 
    for (let year = 1; year <= 90; year++) {
@@ -222,7 +191,6 @@ function createWeeksUI(userYears,userMonths,userDays) {
       addTailwindClasses(yearMonthContainer, 'flex items-center');
 
       const yearLabel = document.createElement('div');
-      // max-sm:hidden - This will make the above element stay hidden until the viewport increases past the width size of 640px.
       addTailwindClasses(yearLabel, 'flex justify-center items-center sm:w-8 sm:h-8 sm:p-3 sm:mb-2 sm:mr-4 sm:ml-1 w-6 h-6 p-2 border rounded text-white text-xs bg-brightRed');
       yearLabel.textContent = `${year}`;
       yearMonthContainer.appendChild(yearLabel);
@@ -246,17 +214,6 @@ function createWeeksUI(userYears,userMonths,userDays) {
       yearContainer.appendChild(yearMonthContainer);
       innerContainer.appendChild(yearContainer);
    }
-
-   function getDateWeek(date) {
-      const currentDate =  (typeof date === 'object') ? date : new Date();
-      const januaryFirst = new Date(currentDate.getFullYear(), 0, 1);
-      const daysToNextMonday = (januaryFirst.getDay() === 1) ? 0 : (7 - januaryFirst.getDay()) % 7;
-      const nextMonday = new Date(currentDate.getFullYear(), 0, januaryFirst.getDate() + daysToNextMonday);
-   
-      return (currentDate < nextMonday) ? 52 : 
-      (currentDate > nextMonday ? Math.ceil(
-      (currentDate - nextMonday) / (24 * 3600 * 1000) / 7) : 1);
-  }
    
   const currentDate = new Date();
   const weekNumber = getDateWeek();
@@ -271,7 +228,6 @@ function createWeeksUI(userYears,userMonths,userDays) {
    if(userYears != 0) { 
       const children = gridElements.children;
       const childrenArray = Array.from(children);
-      console.log(children,childrenArray);
 
       const firstnthChildren = childrenArray.slice(0, weekNumber+1);
 
@@ -289,28 +245,28 @@ function timeLived(userDOB){
 
    const currentYear = new Date().getFullYear();
    const currentMonth = new Date().getMonth() + 1;
-   const currentDate = new Date().getDate();
-   const currentHours = new Date().getHours();
-   const currentMinutes = new Date().getMinutes();
-   const currentSeconds = new Date().getSeconds();
 
-   
    const userYear = Number(userDOB.split('-')[0]);
    const userMonth = Number(userDOB.split('-')[1]);
-   const userDay = Number(userDOB.split('-')[2]);
 
    let yearsLived = currentMonth < userMonth ? currentYear - userYear -1 : currentYear - userYear
    let monthsLived = currentMonth < userMonth ? (12 - userMonth) + currentMonth  : currentMonth - userMonth;
-   let daysLived = currentDate < userDay ? userDay - currentDate : currentDate - userDay;
 
-   // Debugging Stuff
-   // console.log(`${currentYear} ,${currentMonth}, ${currentDate} `);
-   // console.log(userYear, userMonth, userDay);
-
-   yearsLived_arr = [yearsLived,monthsLived,daysLived];
+   yearsLived_arr = [yearsLived,monthsLived];
    return yearsLived_arr;
 }
 
+// MARK: Get Week Number by Date
+function getDateWeek(date) {
+   const currentDate =  (typeof date === 'object') ? date : new Date();
+   const januaryFirst = new Date(currentDate.getFullYear(), 0, 1);
+   const daysToNextMonday = (januaryFirst.getDay() === 1) ? 0 : (7 - januaryFirst.getDay()) % 7;
+   const nextMonday = new Date(currentDate.getFullYear(), 0, januaryFirst.getDate() + daysToNextMonday);
+
+   return (currentDate < nextMonday) ? 52 : 
+   (currentDate > nextMonday ? Math.ceil(
+   (currentDate - nextMonday) / (24 * 3600 * 1000) / 7) : 1);
+}
 
  // Get User DOB
 function getUserDOB(callback) {
@@ -345,7 +301,7 @@ function updateUI() {
          clearScreen('Years');
          clearScreen('Months');
          clearScreen('Weeks');
-         createWeeksUI(userAge[0],userAge[1],userAge[2]);
+         createWeeksUI(userAge[0]);
       }
    }else{ 
       if (selectedTimeFrame === "Years") {
@@ -378,7 +334,6 @@ function main() {
    userTimeFramesElement.addEventListener("change", (event) => {
       const selectedIndex = userTimeFramesElement.options.selectedIndex;
       selectedTimeFrame = userTimeFramesElement.options[selectedIndex].value;
-      console.log(selectedTimeFrame);
       updateUI();
    });
 }
