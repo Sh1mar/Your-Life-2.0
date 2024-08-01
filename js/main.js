@@ -3,21 +3,44 @@ let userTimeFramesElement = document.getElementById('timeFrameSelection');
 let userDOBValue = null;
 let selectedTimeFrame = null;
 
-// MARK: Tailwind Utilities Functions
+
+
 // This code defines a helper function addTailwindClasses that takes an element and a string of Tailwind classes as arguments.
 // It splits the classes string into an array and adds them to the element's classList.
 function addTailwindClasses(element, classes) {
    element.classList.add(...classes.split(' '));
 }
 
-// MARK:Clear UI
-// The clearContainer function is defined to clear the contents of a container element by its ID.
-function clearScreen(containerId) {
-   const container = document.getElementById(String(containerId));
-   while (container.firstChild) {
-       container.removeChild(container.firstChild);
-   }
-}
+// MARK: Calculate Time Lived
+function timeLived(userDOB){ 
+
+   let yearsLived_arr = [];
+ 
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth() + 1;
+ 
+    const userYear = Number(userDOB.split('-')[0]);
+    const userMonth = Number(userDOB.split('-')[1]);
+ 
+    let yearsLived = currentMonth < userMonth ? currentYear - userYear -1 : currentYear - userYear
+    let monthsLived = currentMonth < userMonth ? (12 - userMonth) + currentMonth  : currentMonth - userMonth;
+ 
+    yearsLived_arr = [yearsLived,monthsLived];
+    return yearsLived_arr;
+ }
+ 
+ // MARK: Week Number by Date
+ function getDateWeek(date) {
+    const currentDate =  (typeof date === 'object') ? date : new Date();
+    const januaryFirst = new Date(currentDate.getFullYear(), 0, 1);
+    const daysToNextMonday = (januaryFirst.getDay() === 1) ? 0 : (7 - januaryFirst.getDay()) % 7;
+    const nextMonday = new Date(currentDate.getFullYear(), 0, januaryFirst.getDate() + daysToNextMonday);
+ 
+    return (currentDate < nextMonday) ? 52 : 
+    (currentDate > nextMonday ? Math.ceil(
+    (currentDate - nextMonday) / (24 * 3600 * 1000) / 7) : 1);
+ }
+
 
 // MARK: Years UI
 function createYearsUI(userDOB) { 
@@ -238,50 +261,16 @@ function createWeeksUI(userYears) {
    }
 }
 
-// MARK: Time Lived
-function timeLived(userDOB){ 
-
-  let yearsLived_arr = [];
-
-   const currentYear = new Date().getFullYear();
-   const currentMonth = new Date().getMonth() + 1;
-
-   const userYear = Number(userDOB.split('-')[0]);
-   const userMonth = Number(userDOB.split('-')[1]);
-
-   let yearsLived = currentMonth < userMonth ? currentYear - userYear -1 : currentYear - userYear
-   let monthsLived = currentMonth < userMonth ? (12 - userMonth) + currentMonth  : currentMonth - userMonth;
-
-   yearsLived_arr = [yearsLived,monthsLived];
-   return yearsLived_arr;
+// MARK:Clear UI
+// The clearContainer function is defined to clear the contents of a container element by its ID.
+function clearScreen(containerId) {
+   const container = document.getElementById(String(containerId));
+   while (container.firstChild) {
+       container.removeChild(container.firstChild);
+   }
 }
 
-// MARK: Get Week Number by Date
-function getDateWeek(date) {
-   const currentDate =  (typeof date === 'object') ? date : new Date();
-   const januaryFirst = new Date(currentDate.getFullYear(), 0, 1);
-   const daysToNextMonday = (januaryFirst.getDay() === 1) ? 0 : (7 - januaryFirst.getDay()) % 7;
-   const nextMonday = new Date(currentDate.getFullYear(), 0, januaryFirst.getDate() + daysToNextMonday);
-
-   return (currentDate < nextMonday) ? 52 : 
-   (currentDate > nextMonday ? Math.ceil(
-   (currentDate - nextMonday) / (24 * 3600 * 1000) / 7) : 1);
-}
-
- // Get User DOB
-function getUserDOB(callback) {
-   const userForm = document.getElementById('userForm');
-   const userDOBElement = document.getElementById('userDOB');
-
-   userForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const userDOB = userDOBElement.value;
-      // Call the callback function with the DOB value
-      callback(userDOB);
-   });
-}
-
-// Handle UI Update
+// MARK: UI Updates
 function updateUI() {
    if (userDOBValue) {
       const userAge = timeLived(userDOBValue);
@@ -321,6 +310,19 @@ function updateUI() {
          createWeeksUI(0);
       }
    }
+}
+
+//MARK:Get User DOB
+function getUserDOB(callback) {
+   const userForm = document.getElementById('userForm');
+   const userDOBElement = document.getElementById('userDOB');
+
+   userForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const userDOB = userDOBElement.value;
+      // Call the callback function with the DOB value
+      callback(userDOB);
+   });
 }
 
 // MARK:Main
