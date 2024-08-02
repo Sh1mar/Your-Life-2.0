@@ -3,44 +3,52 @@ let userTimeFramesElement = document.getElementById('timeFrameSelection');
 let userDOBValue = null;
 let selectedTimeFrame = null;
 
-// This code defines a helper function addTailwindClasses that takes an element and a string of Tailwind classes as arguments.
 // It splits the classes string into an array and adds them to the element's classList.
 function addTailwindClasses(element, classes) {
    element.classList.add(...classes.split(' '));
 }
 
-// MARK: Calculate Time Lived
+// MARK: Calculates thet Users time lived
 function timeLived(userDOB){ 
 
    let yearsLived_arr = [];
- 
-    const currentYear = new Date().getFullYear();
-    const currentMonth = new Date().getMonth() + 1;
- 
-    const userYear = Number(userDOB.split('-')[0]);
-    const userMonth = Number(userDOB.split('-')[1]);
- 
-    let yearsLived = currentMonth < userMonth ? currentYear - userYear -1 : currentYear - userYear
-    let monthsLived = currentMonth < userMonth ? (12 - userMonth) + currentMonth  : currentMonth - userMonth;
- 
-    yearsLived_arr = [yearsLived,monthsLived];
-    return yearsLived_arr;
+   
+   // Intializes the current Year and Month 
+   const currentYear = new Date().getFullYear();
+   const currentMonth = new Date().getMonth() + 1;
+
+   const userYear = Number(userDOB.split('-')[0]);
+   const userMonth = Number(userDOB.split('-')[1]);
+
+   // Calculates User Year and Month, given the current Month
+   let yearsLived = currentMonth < userMonth ? currentYear - userYear -1 : currentYear - userYear
+   let monthsLived = currentMonth < userMonth ? (12 - userMonth) + currentMonth  : currentMonth - userMonth;
+
+   yearsLived_arr = [yearsLived,monthsLived];
+
+   return yearsLived_arr;
  }
  
- // MARK: Week Number by Date
+ // MARK: Week Number by Date ~ Credit https://www.geeksforgeeks.org/calculate-current-week-number-in-javascript/
  function getDateWeek(date) {
-    const currentDate =  (typeof date === 'object') ? date : new Date();
-    const januaryFirst = new Date(currentDate.getFullYear(), 0, 1);
-    const daysToNextMonday = (januaryFirst.getDay() === 1) ? 0 : (7 - januaryFirst.getDay()) % 7;
-    const nextMonday = new Date(currentDate.getFullYear(), 0, januaryFirst.getDate() + daysToNextMonday);
- 
-    return (currentDate < nextMonday) ? 52 : 
-    (currentDate > nextMonday ? Math.ceil(
-    (currentDate - nextMonday) / (24 * 3600 * 1000) / 7) : 1);
- }
+   
+   // Ensure currentDate is set to either the provided date object or the current date 
+   const januaryFirst = new Date(currentDate.getFullYear(), 0, 1);
+   
+   // Initialize januaryFirst to the beginning of the current year using new
+   const daysToNextMonday = (januaryFirst.getDay() === 1) ? 0 : (7 - januaryFirst.getDay()) % 7;
+   
+   // Determine the number of days to the next Monday from January 1st
+   const nextMonday = new Date(currentDate.getFullYear(), 0, januaryFirst.getDate() + daysToNextMonday);
+
+   // Compare currentDate with nextMonday and calculate the week number accordingly
+   return (currentDate < nextMonday) ? 52 : 
+   (currentDate > nextMonday ? Math.ceil(
+   (currentDate - nextMonday) / (24 * 3600 * 1000) / 7) : 1);
+}
 
 
-// MARK: Years UI
+// MARK: Years UI using DOM
 function createYearsUI(userDOB) { 
    const mainDiv = document.createElement("div");
    const innerDiv = document.createElement("div");
@@ -66,7 +74,8 @@ function createYearsUI(userDOB) {
    }
 }
 
-// MARK: Months UI
+// MARK: Months UI using DOM
+// Below is the HTML template that I used to create the DOM in JS
 /* <div class="flex justify-center items-center py-16" id="Months">
    <div class="overflow-auto">
 
@@ -121,6 +130,7 @@ function createYearsUI(userDOB) {
    </div>
 
 </div> */
+
 function createMonthsUI(userYears,userMonths) {
   
    const container = document.createElement('div');
@@ -178,7 +188,6 @@ function createMonthsUI(userYears,userMonths) {
    if(userYears != 0) { 
       const children = gridElements.children;
       const childrenArray = Array.from(children);
-      console.log(children,childrenArray);
 
       const first8Children = childrenArray.slice(0, userMonths-1);
 
@@ -189,7 +198,8 @@ function createMonthsUI(userYears,userMonths) {
    }
 }
 
-// MARK: Weeks UI
+// MARK: Weeks UI using DOM
+// The HTML Structure mirrors the structure of the Months UI with a few changes
 function createWeeksUI(userYears) {
 
    const container = document.createElement('div');
@@ -270,10 +280,12 @@ function clearScreen(containerId) {
 
 // MARK: UI Updates
 function updateUI() {
+   // CHhecks if userDOBValue is set 
    if (userDOBValue) {
       const userAge = timeLived(userDOBValue);
       console.log(userAge);
 
+      // Render the appropriate UI based on the selectedTimeFrame
       if (selectedTimeFrame === "Years") {
          clearScreen('Years');
          clearScreen('Months');
@@ -290,7 +302,7 @@ function updateUI() {
          clearScreen('Weeks');
          createWeeksUI(userAge[0]);
       }
-   }else{ 
+      // If userDOBValue is not set, render UI with default values 
       if (selectedTimeFrame === "Years") {
          clearScreen('Years');
          clearScreen('Months');
@@ -315,22 +327,24 @@ function getUserDOB(callback) {
    const userForm = document.getElementById('userForm');
    const userDOBElement = document.getElementById('userDOB');
 
+//  Adds an event listener to the form to handle the submit event and retrieve the user's DOB using a callback
    userForm.addEventListener('submit', (event) => {
       event.preventDefault();
       const userDOB = userDOBElement.value;
-      // Call the callback function with the DOB value
+
       callback(userDOB);
    });
 }
 
 // MARK:Main
 function main() {
+   // Get the user's DOB and update the UI accordingly
    getUserDOB((userDOB) => {
       userDOBValue = userDOB;
-      console.log(userDOBValue);
       updateUI();
    });
-
+   
+   // / Adds an event listener to the time frame selection element to update the UI on change
    userTimeFramesElement.addEventListener("change", (event) => {
       const selectedIndex = userTimeFramesElement.options.selectedIndex;
       selectedTimeFrame = userTimeFramesElement.options[selectedIndex].value;
