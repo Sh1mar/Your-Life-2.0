@@ -27,7 +27,7 @@ function timeLived(userDOB){
    yearsLived_arr = [yearsLived,monthsLived];
 
    return yearsLived_arr;
- }
+}
  
  // MARK: Week Number by Date ~ Credit https://www.geeksforgeeks.org/calculate-current-week-number-in-javascript/
  function getDateWeek(date) {
@@ -252,8 +252,6 @@ function createWeeksUI(userYears) {
   const currentDate = new Date();
   const weekNumber = getDateWeek();
    
-  console.log("Week number of " + currentDate + " is : " + weekNumber);
-
    container.appendChild(innerContainer);
    document.getElementById('Weeks').appendChild(container);
 
@@ -286,7 +284,7 @@ function updateUI() {
    // CHhecks if userDOBValue is set 
    if (userDOBValue) {
       const userAge = timeLived(userDOBValue);
-      console.log(userAge);
+      // console.log(userAge);
 
       // Render the appropriate UI based on the selectedTimeFrame
       if (selectedTimeFrame === "Years") {
