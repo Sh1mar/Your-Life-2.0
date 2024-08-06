@@ -31,6 +31,9 @@ function timeLived(userDOB){
  
  // MARK: Week Number by Date ~ Credit https://www.geeksforgeeks.org/calculate-current-week-number-in-javascript/
  function getDateWeek(date) {
+
+   // Checks the tyoe of date 
+   const currentDate = (typeof date === 'object') ? date : new Date();
    
    // Ensure currentDate is set to either the provided date object or the current date 
    const januaryFirst = new Date(currentDate.getFullYear(), 0, 1);
