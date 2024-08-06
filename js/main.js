@@ -284,7 +284,7 @@ function updateUI() {
    // CHhecks if userDOBValue is set 
    if (userDOBValue) {
       const userAge = timeLived(userDOBValue);
-      // console.log(userAge);
+      console.log(userAge);
 
       // Render the appropriate UI based on the selectedTimeFrame
       if (selectedTimeFrame === "Years") {
@@ -303,7 +303,9 @@ function updateUI() {
          clearScreen('Weeks');
          createWeeksUI(userAge[0]);
       }
-      // If userDOBValue is not set, render UI with default values 
+   
+   // If userDOBValue is not set, render UI with default values 
+   }else { 
       if (selectedTimeFrame === "Years") {
          clearScreen('Years');
          clearScreen('Months');
@@ -319,7 +321,7 @@ function updateUI() {
          clearScreen('Months');
          clearScreen('Weeks');
          createWeeksUI(0);
-      }
+   }
    }
 }
 
