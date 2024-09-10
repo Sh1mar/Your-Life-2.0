@@ -192,10 +192,10 @@ function createMonthsUI(userYears,userMonths) {
       const children = gridElements.children;
       const childrenArray = Array.from(children);
 
-      const first8Children = childrenArray.slice(0, userMonths-1);
+      const firstChildren = childrenArray.slice(0, userMonths-1);
 
       // Log or process the first 8 children as needed
-      first8Children.forEach((child) => {
+      firstChildren.forEach((child) => {
          addTailwindClasses(child, 'bg-brightRed');
       });
    }
@@ -341,6 +341,7 @@ function getUserDOB(callback) {
 
 // MARK:Main
 function main() {
+   
    // Get the user's DOB and update the UI accordingly
    getUserDOB((userDOB) => {
       userDOBValue = userDOB;
